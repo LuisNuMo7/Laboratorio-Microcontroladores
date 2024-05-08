@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 import serial
-
+import pandas as pd
+import matplotlib.pyplot as plt
+# from graficos import print_chart
+path = "./Tensiones.csv"
 ser = serial.Serial(
     port = '/tmp/ttyS1',\
 #    port = 'COM3',\
@@ -11,8 +14,8 @@ ser = serial.Serial(
     timeout=0\
     )
 #ser=serial.Serial('/tmp/ttyS1', 9600)
-#f = open('Tensiones.csv', 'w+')
-
+f = open('Tensiones.csv', 'w+')
+f.write("Setpoint,PID_Output,Planta_Output\n")
 print("connected to: "+ ser.portstr)
 
 try:
@@ -20,12 +23,17 @@ try:
         for c in ser.read():
             c=chr(c)
             print(c, end= "")
- #           f.write(c)
+            f.write(c)
 except KeyboardInterrupt:
     print("\nInterrupción de Programa debido al usuario.")
 
 finally:
     ser.close()
-  #  f.close()
+    f.close()
+    df = pd.read_csv(path, delimiter=",")
+    print(df)
+    df.plot()
+    plt.show()
+    
 
 

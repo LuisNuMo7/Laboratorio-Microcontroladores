@@ -21,10 +21,11 @@ PCD8544 lcd;
 // Debido a que la libreria del PID tiene una funcion
 // que calcula la salida del PID, solo basta con seleccionar
 // los valores de las constantes
+double Kp = 1;        // Constante proporcional
+double Ki = 0.1;        // Constante integral
+double Kd = 0.1;        // Constante derivativa
 
-double Kp = 10;        // Constante proporcional
-double Ki = 2;        // Constante integral
-double Kd = 1;        // Constante derivativa
+float potRead;
 
 // La variable input en este caso es la temperatura de la planta
 // La variable output es la salida del PID
@@ -54,7 +55,7 @@ void setup() {
   Serial.begin(9600); //Se da inicio a la comunicación con el puerto serial
   
   
-  // <------------- Configuracion Pantalla ---------------->
+ //<------------- Configuracion Pantalla ---------------->
   pinMode(SWITCH_PIN, INPUT_PULLUP); // Configura el pin del switch como entrada con pull-up
   pinMode(LCD_POWER_PIN, OUTPUT);    // Configura el pin de alimentación de la pantalla LCD como salida
   digitalWrite(LCD_POWER_PIN, LOW);  // Apaga inicialmente la pantalla LCD
@@ -67,11 +68,11 @@ void setup() {
   pinMode(RED_LED_PIN, OUTPUT);
 
   // <----- Inicializacion del PID ------->
-  myPID.SetOutputLimits(20,80); // Limites PID
-  Setpoint = 0;
+  myPID.SetOutputLimits(-100,100); // Limites PID
   myPID.SetMode(AUTOMATIC);
-  Input = simPlanta(0);
+  // Input = simPlanta(0);
   // <----- Fin Inicializacion del PID --->
+  //  Serial.println("Setpoint,PID_Output,Planta_Output");
 }
 
 void loop() {
@@ -84,45 +85,48 @@ void loop() {
   // Enciende la pantalla LCD
   if (switchState > 700) {
     lcd.setPower(true); // Enciende la pantalla LCD
-    delay(DELAY_TIME);        // Espera 1 segundo para evitar rebotes del switch
+    // delay(DELAY_TIME);        // Espera 1 segundo para evitar rebotes del switch
   } else {
     lcd.setPower(false); // Apaga la pantalla LCD
   }
-  // <-------------------------------------------------------->
   lcd.clear();
+  lcd.setCursor(0, 0);
+  // <-------------------------------------------------------->
 
   // // Write some text
-  lcd.setCursor(0, 0);
   // Calcular el valor de control PID
 
-  float TempWatts = (int)Output* 20.0 / 255;
-  float blockTemp = simPlanta(TempWatts);
-  Input = blockTemp;
-  if(myPID.Compute()){
+  // float TempWatts = (int)Output* 20.0 / 255;
+  Input = simPlanta(Output);
+  potRead = analogRead(A0);
+  Setpoint =  map(potRead, 0, 1023, 20, 80);
+
+  myPID.Compute();
 // analogWrite()
-  Setpoint = analogRead(A0) / 13;
-  }
-
-  // Mapear el valor del potenciómetro al rango de 0 a 255 (valores para la variable Q)
-
   
 
   // Llamar a la función simPlanta con el valor calculado de Q
-  float temperature = simPlanta(TempWatts);
+  // float temperature = simPlanta(TempWatts);
 
   // Encender los LEDs correspondientes según el rango de temperatura
-  if (temperature >= 30 && temperature <= 42) {
-    digitalWrite(GREEN_LED_PIN, HIGH); // Encender el LED verde
-    digitalWrite(BLUE_LED_PIN, LOW);   // Apagar el LED azul
-    digitalWrite(RED_LED_PIN, LOW);    // Apagar el LED rojo
-  } else if (temperature < 30) {
+  if (Input < 30) {
     digitalWrite(GREEN_LED_PIN, LOW);  // Apagar el LED verde
     digitalWrite(BLUE_LED_PIN, HIGH); // Encender el LED azul
     digitalWrite(RED_LED_PIN, LOW);    // Apagar el LED rojo
-  } else {
+  }
+    else if (Input >= 30 && Input <= 42) {
+    digitalWrite(GREEN_LED_PIN, HIGH); // Encender el LED verde
+    digitalWrite(BLUE_LED_PIN, LOW);   // Apagar el LED azul
+    digitalWrite(RED_LED_PIN, LOW);    // Apagar el LED rojo
+  } else if (Input > 30){
     digitalWrite(GREEN_LED_PIN, LOW);  // Apagar el LED verde
     digitalWrite(BLUE_LED_PIN, LOW);   // Apagar el LED azul
     digitalWrite(RED_LED_PIN, HIGH);   // Encender el LED rojo
+  } 
+  else {
+    digitalWrite(GREEN_LED_PIN, LOW);  // Apagar el LED verde
+    digitalWrite(BLUE_LED_PIN, LOW);   // Apagar el LED azul
+    digitalWrite(RED_LED_PIN, LOW);   // Encender el LED rojo
   }
   // float volt = (int)potValue*(100.0 / 1022.0);
   // lcd.print("Formula: ");
@@ -130,8 +134,8 @@ void loop() {
   
   lcd.setCursor(0, 1);
   
-  lcd.print("TempWatts: ");
-  lcd.print(TempWatts);
+  // lcd.print("TempWatts: ");
+  // lcd.print(TempWatts);
   
   lcd.setCursor(0, 2);
   lcd.setCursor(0, 3);
@@ -142,13 +146,14 @@ void loop() {
   lcd.print(" SP: ");
   lcd.print(Setpoint);
 
-  delay(DELAY_TIME);
+  // delay(DELAY_TIME);
   
   // Mostrar resultados
-  Serial.print("TempWatts: ");
-  Serial.print(TempWatts);
-  Serial.print(" - Temperatura: ");
-  Serial.println(temperature);
+  Serial.print(Setpoint);
+  Serial.print(",");
+  Serial.print(Output);
+  Serial.print(",");
+  Serial.println(Input);
 
   delay(DELAY_TIME);
 }
