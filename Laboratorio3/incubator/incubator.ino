@@ -5,7 +5,7 @@
 // https://github.com/drf5n/Arduino-PID-Library/blob/PID_v1_bc/examples/PID_simulated_heater/PID_simulated_heater.ino
 
 // Parametros de simulacion
-#define DELAY_TIME 10
+#define DELAY_TIME 1
 
 // <----------- Pantalla ----------->
 PCD8544 lcd;
@@ -22,14 +22,14 @@ PCD8544 lcd;
 // que calcula la salida del PID, solo basta con seleccionar
 // los valores de las constantes
 
-double Kp = 2;        // Constante proporcional
-double Ki = 5;        // Constante integral
+double Kp = 10;        // Constante proporcional
+double Ki = 2;        // Constante integral
 double Kd = 1;        // Constante derivativa
 
 // La variable input en este caso es la temperatura de la planta
 // La variable output es la salida del PID
 double Setpoint, Input, Output;
-PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
+PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, P_ON_E, DIRECT);
 // <--------- Fin PID --------->
 // <--------- Funcion para simular el proceso de la incubadora ----->
 float simPlanta(float Q){
@@ -51,6 +51,9 @@ float simPlanta(float Q){
 // <--------- Fin funcion para simular el proceso de la incubadora ----->
 
 void setup() {
+  Serial.begin(9600); //Se da inicio a la comunicación con el puerto serial
+  
+  
   // <------------- Configuracion Pantalla ---------------->
   pinMode(SWITCH_PIN, INPUT_PULLUP); // Configura el pin del switch como entrada con pull-up
   pinMode(LCD_POWER_PIN, OUTPUT);    // Configura el pin de alimentación de la pantalla LCD como salida
@@ -58,15 +61,16 @@ void setup() {
 
   lcd.begin(); // default resolution is 84x48
 
-  Serial.begin(9600); //Se da inicio a la comunicación con el puerto serial
-
-  Setpoint = 0;
+  // Configuracion de los LED
   pinMode(GREEN_LED_PIN, OUTPUT);
   pinMode(BLUE_LED_PIN, OUTPUT);
   pinMode(RED_LED_PIN, OUTPUT);
-  
+
   // <----- Inicializacion del PID ------->
+  myPID.SetOutputLimits(20,80); // Limites PID
+  Setpoint = 0;
   myPID.SetMode(AUTOMATIC);
+  Input = simPlanta(0);
   // <----- Fin Inicializacion del PID --->
 }
 
@@ -89,13 +93,19 @@ void loop() {
 
   // // Write some text
   lcd.setCursor(0, 0);
-  int potValue = analogRead(A0);
   // Calcular el valor de control PID
 
   float TempWatts = (int)Output* 20.0 / 255;
-  myPID.Compute();
+  float blockTemp = simPlanta(TempWatts);
+  Input = blockTemp;
+  if(myPID.Compute()){
+// analogWrite()
+  Setpoint = analogRead(A0) / 13;
+  }
+
   // Mapear el valor del potenciómetro al rango de 0 a 255 (valores para la variable Q)
-  float Q = map(potValue, 0, 1023, 0, 255);
+
+  
 
   // Llamar a la función simPlanta con el valor calculado de Q
   float temperature = simPlanta(TempWatts);
@@ -120,12 +130,10 @@ void loop() {
   
   lcd.setCursor(0, 1);
   
-  lcd.print("Form2: ");
+  lcd.print("TempWatts: ");
   lcd.print(TempWatts);
   
   lcd.setCursor(0, 2);
-  lcd.print("Temp: ");
-  lcd.print(potValue);
   lcd.setCursor(0, 3);
   lcd.print("PID: ");
   lcd.print(Output);
@@ -137,8 +145,8 @@ void loop() {
   delay(DELAY_TIME);
   
   // Mostrar resultados
-  Serial.print("potValue: ");
-  Serial.print(potValue);
+  Serial.print("TempWatts: ");
+  Serial.print(TempWatts);
   Serial.print(" - Temperatura: ");
   Serial.println(temperature);
 

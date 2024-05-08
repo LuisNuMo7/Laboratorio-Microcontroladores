@@ -14,15 +14,15 @@ Circuit Id: Node-198
 
 Unique  Id: Led-191: 
 Circuit Id: Led-189
-<item itemtype="Led" Grounded="false" MaxCurrent="0.03" x="-152" valLabelx="0" y="-204" mainComp="false" boardRot="-1e+6" boardPos="-1e+6,-1e+6" valLabRot="0" Show_id="false" valLabely="0" Color="0" Resistance="0.6" labelrot="0" objectName="Led-191" circRot="0" circPos="0,0" rotation="90" vflip="1" labelx="-16" labely="-24" Threshold="2.4" id="Led-189" hflip="1"/>
+<item itemtype="Led" Grounded="false" MaxCurrent="0.03" x="-152" valLabelx="0" y="-204" mainComp="false" boardRot="-1e+6" boardPos="-1e+6,-1e+6" valLabRot="0" Show_id="false" valLabely="0" Color="1" Resistance="0.6" labelrot="0" objectName="Led-191" circRot="0" circPos="0,0" rotation="90" vflip="1" labelx="-16" labely="-24" Threshold="2.4" id="Led-189" hflip="1"/>
 
 Unique  Id: Led-190: 
 Circuit Id: Led-189
-<item itemtype="Led" Grounded="false" MaxCurrent="0.03" x="-200" valLabelx="0" y="-204" mainComp="false" boardRot="-1e+6" boardPos="-1e+6,-1e+6" valLabRot="0" Show_id="false" valLabely="0" Color="0" Resistance="0.6" labelrot="0" objectName="Led-190" circRot="0" circPos="0,0" rotation="90" vflip="1" labelx="-16" labely="-24" Threshold="2.4" id="Led-189" hflip="1"/>
+<item itemtype="Led" Grounded="false" MaxCurrent="0.03" x="-200" valLabelx="0" y="-204" mainComp="false" boardRot="-1e+6" boardPos="-1e+6,-1e+6" valLabRot="0" Show_id="false" valLabely="0" Color="2" Resistance="0.6" labelrot="0" objectName="Led-190" circRot="0" circPos="0,0" rotation="90" vflip="1" labelx="-16" labely="-24" Threshold="2.4" id="Led-189" hflip="1"/>
 
 Unique  Id: Led-189: 
 Circuit Id: Led-189
-<item itemtype="Led" Grounded="false" MaxCurrent="0.03" x="-248" valLabelx="0" y="-204" mainComp="false" boardRot="-1e+6" boardPos="-1e+6,-1e+6" valLabRot="0" Show_id="false" valLabely="0" Color="0" Resistance="0.6" labelrot="0" objectName="Led-189" circRot="0" circPos="0,0" rotation="90" vflip="1" labelx="-16" labely="-24" Threshold="2.4" id="Led-189" hflip="1"/>
+<item itemtype="Led" Grounded="false" MaxCurrent="0.03" x="-248" valLabelx="0" y="-204" mainComp="false" boardRot="-1e+6" boardPos="-1e+6,-1e+6" valLabRot="0" Show_id="false" valLabely="0" Color="3" Resistance="0.6" labelrot="0" objectName="Led-189" circRot="0" circPos="0,0" rotation="90" vflip="1" labelx="-16" labely="-24" Threshold="2.4" id="Led-189" hflip="1"/>
 
 Unique  Id: Ground-135: 
 Circuit Id: Ground-135
@@ -38,7 +38,7 @@ Circuit Id: Pcd8544-60
 
 Unique  Id: Potentiometer-71: 
 Circuit Id: Potentiometer-71
-<item itemtype="Potentiometer" x="124" valLabelx="10" y="-176" mainComp="false" Show_res="true" boardRot="-1e+6" boardPos="-1e+6,-1e+6" valLabRot="0" Show_id="false" valLabely="-20" Resistance="1" labelrot="0" objectName="Potentiometer-71" circRot="-5.486129280331905e+303" Value_Ohm="29" circPos="0,0" Unit=" kΩ" rotation="-90" vflip="1" labelx="-16" labely="-40" id="Potentiometer-71" hflip="-1"/>
+<item itemtype="Potentiometer" x="124" valLabelx="10" y="-176" mainComp="false" Show_res="true" boardRot="-1e+6" boardPos="-1e+6,-1e+6" valLabRot="0" Show_id="false" valLabely="-20" Resistance="1" labelrot="0" objectName="Potentiometer-71" circRot="-5.486129280331905e+303" Value_Ohm="484" circPos="0,0" Unit=" kΩ" rotation="-90" vflip="1" labelx="-16" labely="-40" id="Potentiometer-71" hflip="-1"/>
 
 Unique  Id: Tunnel-80: 
 Circuit Id: Tunnel-80
@@ -95,6 +95,10 @@ Circuit Id: Resistor-145
 Unique  Id: SerialPort-9: 
 Circuit Id: SerialPort-9
 <item itemtype="SerialPort" DataBits="8" x="-32" StopBits="1" valLabelx="0" y="-460" mainComp="false" FlowControl="0" boardRot="-1e+6" boardPos="-1e+6,-1e+6" valLabRot="0" Mcu_Id="Arduino Uno-1" Show_id="false" Mcu_Uart="1" valLabely="0" Auto_Open="false" labelrot="0" objectName="SerialPort-9" circRot="6.650045584796332e+246" circPos="0,0" Port_Name="COM2" rotation="0" vflip="1" BaudRate="9600" labelx="-34" labely="-20" Parity="0" id="SerialPort-9" hflip="1"/>
+
+Unique  Id: SerialTerm-247: 
+Circuit Id: SerialTerm-247
+<item itemtype="SerialTerm" x="-96" valLabelx="0" y="-364" mainComp="false" boardRot="-1e+6" boardPos="-1e+6,-1e+6" valLabRot="0" Mcu_Id="Arduino Uno-1" Show_id="false" Mcu_Uart="1" valLabely="0" posx="645" labelrot="0" objectName="SerialTerm-247" circRot="0" circPos="0,0" posy="116" sizex="617" rotation="0" vflip="1" labelx="-16" labely="-24" sizey="251" id="SerialTerm-247" hflip="1"/>
 
 Unique  Id: Connector-66: 
 Circuit Id: Connector-66
