@@ -1,6 +1,9 @@
 #include <PCD8544.h>
 #include <PID_v1_bc.h>
 
+//Referencias de los headers
+// https://github.com/drf5n/Arduino-PID-Library/blob/PID_v1_bc/examples/PID_simulated_heater/PID_simulated_heater.ino
+
 // Parametros de simulacion
 #define DELAY_TIME 10
 
@@ -18,15 +21,15 @@ PCD8544 lcd;
 // Debido a que la libreria del PID tiene una funcion
 // que calcula la salida del PID, solo basta con seleccionar
 // los valores de las constantes
-double Setpoint = 50; // Valor deseado que queremos alcanzar
+
 double Kp = 2;        // Constante proporcional
 double Ki = 5;        // Constante integral
 double Kd = 1;        // Constante derivativa
 
 // La variable input en este caso es la temperatura de la planta
 // La variable output es la salida del PID
-double input, output;
-PID myPID(&input, &output, &Setpoint, Kp, Ki, Kd, DIRECT);
+double Setpoint, Input, Output;
+PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
 // <--------- Fin PID --------->
 // <--------- Funcion para simular el proceso de la incubadora ----->
 float simPlanta(float Q){
@@ -57,6 +60,7 @@ void setup() {
 
   Serial.begin(9600); //Se da inicio a la comunicación con el puerto serial
 
+  Setpoint = 0;
   pinMode(GREEN_LED_PIN, OUTPUT);
   pinMode(BLUE_LED_PIN, OUTPUT);
   pinMode(RED_LED_PIN, OUTPUT);
@@ -87,12 +91,14 @@ void loop() {
   lcd.setCursor(0, 0);
   int potValue = analogRead(A0);
   // Calcular el valor de control PID
+
+  float TempWatts = (int)Output* 20.0 / 255;
   myPID.Compute();
   // Mapear el valor del potenciómetro al rango de 0 a 255 (valores para la variable Q)
   float Q = map(potValue, 0, 1023, 0, 255);
 
   // Llamar a la función simPlanta con el valor calculado de Q
-  float temperature = simPlanta(Q);
+  float temperature = simPlanta(TempWatts);
 
   // Encender los LEDs correspondientes según el rango de temperatura
   if (temperature >= 30 && temperature <= 42) {
@@ -113,7 +119,7 @@ void loop() {
   // lcd.print(volt);
   
   lcd.setCursor(0, 1);
-  float TempWatts = (int)output* 20.0 / 255;
+  
   lcd.print("Form2: ");
   lcd.print(TempWatts);
   
@@ -122,7 +128,7 @@ void loop() {
   lcd.print(potValue);
   lcd.setCursor(0, 3);
   lcd.print("PID: ");
-  lcd.print(output);
+  lcd.print(Output);
 
   lcd.setCursor(0, 4);
   lcd.print(" SP: ");
