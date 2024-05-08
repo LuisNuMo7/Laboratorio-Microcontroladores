@@ -1,15 +1,17 @@
 #include <PCD8544.h>
 #include <PID_v1_bc.h>
 
+// Parametros de simulacion
+#define DELAY_TIME 10
+
 // <----------- Pantalla ----------->
 PCD8544 lcd;
 #define SWITCH_PIN A1      // Pin al que está conectado el switch
 #define LCD_POWER_PIN 3    // Pin al que está conectado el pin de alimentación de la pantalla LCD
 // <----------- Luces LED ---------->
+#define BLUE_LED_PIN 8  // Pin al que está conectado el LED azul
 #define GREEN_LED_PIN 9 // Pin al que está conectado el LED verde
-#define BLUE_LED_PIN 10  // Pin al que está conectado el LED azul
-#define RED_LED_PIN 8   // Pin al que está conectado el LED rojo
-
+#define RED_LED_PIN 10   // Pin al que está conectado el LED rojo
 // <--------- PID ------------->
 
 // Definicion de las constantes del PID
@@ -45,27 +47,16 @@ float simPlanta(float Q){
 }
 // <--------- Fin funcion para simular el proceso de la incubadora ----->
 
-/*
-void LCD_state(){
-  int switchState = analogRead(A1);
-  
-  if (switchState > 700){
-    lcd.setPower(1);
-  } else{
-    lcd.setPower(0);
-  }
-}*/
-
 void setup() {
   // <------------- Configuracion Pantalla ---------------->
   pinMode(SWITCH_PIN, INPUT_PULLUP); // Configura el pin del switch como entrada con pull-up
   pinMode(LCD_POWER_PIN, OUTPUT);    // Configura el pin de alimentación de la pantalla LCD como salida
   digitalWrite(LCD_POWER_PIN, LOW);  // Apaga inicialmente la pantalla LCD
-  //lcd.begin();
+
   lcd.begin(); // default resolution is 84x48
 
   Serial.begin(9600); //Se da inicio a la comunicación con el puerto serial
-  //pinMode(8, OUTPUT);
+
   pinMode(GREEN_LED_PIN, OUTPUT);
   pinMode(BLUE_LED_PIN, OUTPUT);
   pinMode(RED_LED_PIN, OUTPUT);
@@ -85,7 +76,7 @@ void loop() {
   // Enciende la pantalla LCD
   if (switchState > 700) {
     lcd.setPower(true); // Enciende la pantalla LCD
-    delay(1000);        // Espera 1 segundo para evitar rebotes del switch
+    delay(DELAY_TIME);        // Espera 1 segundo para evitar rebotes del switch
   } else {
     lcd.setPower(false); // Apaga la pantalla LCD
   }
@@ -94,7 +85,6 @@ void loop() {
 
   // // Write some text
   lcd.setCursor(0, 0);
-  //int value = analogRead(A0);
   int potValue = analogRead(A0);
   // Calcular el valor de control PID
   myPID.Compute();
@@ -118,24 +108,33 @@ void loop() {
     digitalWrite(BLUE_LED_PIN, LOW);   // Apagar el LED azul
     digitalWrite(RED_LED_PIN, HIGH);   // Encender el LED rojo
   }
-  //float volt = value*(100.0 / 1022.0);
+  // float volt = (int)potValue*(100.0 / 1022.0);
+  // lcd.print("Formula: ");
+  // lcd.print(volt);
+  
+  lcd.setCursor(0, 1);
+  float TempWatts = (int)output* 20.0 / 255;
+  lcd.print("Form2: ");
+  lcd.print(TempWatts);
+  
+  lcd.setCursor(0, 2);
   lcd.print("Temp: ");
   lcd.print(potValue);
-  lcd.setCursor(0, 1);
+  lcd.setCursor(0, 3);
   lcd.print("PID: ");
   lcd.print(output);
 
-  lcd.setCursor(0, 3);
+  lcd.setCursor(0, 4);
   lcd.print(" SP: ");
   lcd.print(Setpoint);
-  //lcd.print("  ");
-  delay(1000);
+
+  delay(DELAY_TIME);
   
   // Mostrar resultados
-  Serial.print("Input: ");
-  Serial.print(input);
-  Serial.print(" - Output: ");
-  Serial.println(output);
+  Serial.print("potValue: ");
+  Serial.print(potValue);
+  Serial.print(" - Temperatura: ");
+  Serial.println(temperature);
 
-  delay(1000);
+  delay(DELAY_TIME);
 }
