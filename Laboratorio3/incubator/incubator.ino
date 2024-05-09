@@ -22,8 +22,8 @@ PCD8544 lcd;
 // que calcula la salida del PID, solo basta con seleccionar
 // los valores de las constantes
 double Kp = 1;        // Constante proporcional
-double Ki = 0.3;        // Constante integral
-double Kd = 0.3;        // Constante derivativa
+double Ki = 0.1;        // Constante integral
+double Kd = 0.1;        // Constante derivativa
 
 float potRead;
 
