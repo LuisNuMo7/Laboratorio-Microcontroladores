@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 import serial
-import pandas as pd
-import matplotlib.pyplot as plt
+
 # from graficos import print_chart
 path = "./Tensiones.csv"
 ser = serial.Serial(
@@ -30,10 +29,6 @@ except KeyboardInterrupt:
 finally:
     ser.close()
     f.close()
-    df = pd.read_csv(path, delimiter=",")
-    print(df)
-    df.plot()
-    plt.show()
     
 
 

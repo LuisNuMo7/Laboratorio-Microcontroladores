@@ -15,15 +15,15 @@ PCD8544 lcd;
 #define BLUE_LED_PIN 8  // Pin al que está conectado el LED azul
 #define GREEN_LED_PIN 9 // Pin al que está conectado el LED verde
 #define RED_LED_PIN 10   // Pin al que está conectado el LED rojo
-// <--------- PID ------------->
 
+// <--------- PID ------------->
 // Definicion de las constantes del PID
 // Debido a que la libreria del PID tiene una funcion
 // que calcula la salida del PID, solo basta con seleccionar
 // los valores de las constantes
 double Kp = 1;        // Constante proporcional
-double Ki = 0.1;        // Constante integral
-double Kd = 0.1;        // Constante derivativa
+double Ki = 0.3;        // Constante integral
+double Kd = 0.3;        // Constante derivativa
 
 float potRead;
 
@@ -32,6 +32,7 @@ float potRead;
 double Setpoint, Input, Output;
 PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, P_ON_E, DIRECT);
 // <--------- Fin PID --------->
+
 // <--------- Funcion para simular el proceso de la incubadora ----->
 float simPlanta(float Q){
   float h = 5;
@@ -54,7 +55,6 @@ float simPlanta(float Q){
 void setup() {
   Serial.begin(9600); //Se da inicio a la comunicación con el puerto serial
   
-  
  //<------------- Configuracion Pantalla ---------------->
   pinMode(SWITCH_PIN, INPUT_PULLUP); // Configura el pin del switch como entrada con pull-up
   pinMode(LCD_POWER_PIN, OUTPUT);    // Configura el pin de alimentación de la pantalla LCD como salida
@@ -70,13 +70,10 @@ void setup() {
   // <----- Inicializacion del PID ------->
   myPID.SetOutputLimits(-100,100); // Limites PID
   myPID.SetMode(AUTOMATIC);
-  // Input = simPlanta(0);
   // <----- Fin Inicializacion del PID --->
-  //  Serial.println("Setpoint,PID_Output,Planta_Output");
 }
 
 void loop() {
-  //LCD_state();
   // <------------ Encender la pantalla --------->
   // Lee el estado del switch
   int switchState = analogRead(SWITCH_PIN);
@@ -85,28 +82,17 @@ void loop() {
   // Enciende la pantalla LCD
   if (switchState > 700) {
     lcd.setPower(true); // Enciende la pantalla LCD
-    // delay(DELAY_TIME);        // Espera 1 segundo para evitar rebotes del switch
   } else {
     lcd.setPower(false); // Apaga la pantalla LCD
   }
-  lcd.clear();
-  lcd.setCursor(0, 0);
   // <-------------------------------------------------------->
 
-  // // Write some text
   // Calcular el valor de control PID
-
-  // float TempWatts = (int)Output* 20.0 / 255;
   Input = simPlanta(Output);
   potRead = analogRead(A0);
   Setpoint =  map(potRead, 0, 1023, 20, 80);
 
   myPID.Compute();
-// analogWrite()
-  
-
-  // Llamar a la función simPlanta con el valor calculado de Q
-  // float temperature = simPlanta(TempWatts);
 
   // Encender los LEDs correspondientes según el rango de temperatura
   if (Input < 30) {
@@ -128,32 +114,23 @@ void loop() {
     digitalWrite(BLUE_LED_PIN, LOW);   // Apagar el LED azul
     digitalWrite(RED_LED_PIN, LOW);   // Encender el LED rojo
   }
-  // float volt = (int)potValue*(100.0 / 1022.0);
-  // lcd.print("Formula: ");
-  // lcd.print(volt);
   
-  lcd.setCursor(0, 1);
-  
-  // lcd.print("TempWatts: ");
-  // lcd.print(TempWatts);
+  lcd.setCursor(0, 1);  
+  lcd.print("Temp: ");
+  lcd.print(Input);
   
   lcd.setCursor(0, 2);
-  lcd.setCursor(0, 3);
   lcd.print("PID: ");
   lcd.print(Output);
-
-  lcd.setCursor(0, 4);
-  lcd.print(" SP: ");
+;
+  lcd.setCursor(0, 3);
+  lcd.print("SP: ");
   lcd.print(Setpoint);
-
-  // delay(DELAY_TIME);
   
-  // Mostrar resultados
+  // Mostrar resultados para pasar a python
   Serial.print(Setpoint);
   Serial.print(",");
   Serial.print(Output);
   Serial.print(",");
   Serial.println(Input);
-
-  delay(DELAY_TIME);
 }
