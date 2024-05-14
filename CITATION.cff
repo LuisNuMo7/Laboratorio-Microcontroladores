@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: Laboratorio Microcontroladores
+message: >-
+  If you use this software repository, please cite it using the metadata from this file.
+type: software
+authors:
+  - given-names: Seth Ben Gabriel
+    family-names: Harrington Arraez
+  - given-names: Luis
+    family-names: Nunez
+repository-code: >-
+  https://github.com/LuisNuMo7/Laboratorio-Microcontroladores
