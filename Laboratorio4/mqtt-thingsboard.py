@@ -8,7 +8,7 @@ import time
 import socket
 
 HOST = "localhost" 
-PORT_Socket = 1717
+PORT_Socket = 1716
 
 broker="iot.eie.ucr.ac.cr"
 topic="v1/devices/me/telemetry"
