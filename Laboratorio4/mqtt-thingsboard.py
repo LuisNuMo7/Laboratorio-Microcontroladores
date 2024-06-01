@@ -9,12 +9,12 @@ import time
 broker="iot.eie.ucr.ac.cr"
 topic="v1/devices/me/telemetry"
 password="YpucCrCnikzUd5W0tQnm"
-angle_limit = 35
+angle_limit = 5
 ## Serial data preparation
 ser = serial.Serial(
     port = '/tmp/ttyS1',\
 #    port = 'COM3',\
-    baudrate = 9600,\
+    baudrate = 115200,\
     parity=serial.PARITY_NONE,\
     stopbits=serial.STOPBITS_ONE,\
     bytesize=serial.EIGHTBITS,
