@@ -1,3 +1,7 @@
+# To install TBDeviceMqttClient
+# https://thingsboard.io/docs/reference/python-client-sdk/
+#
+
 from tb_device_mqtt import TBDeviceMqttClient, TBPublishInfo
 import serial
 import time
