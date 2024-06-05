@@ -104,10 +104,6 @@ Unique  Id: Node-136:
 Circuit Id: Node-136
 <item circPos="0,0" id="Node-136" rotation="0" labelx="-16" circRot="2.1007758330556e-311" hflip="1" x="-388" valLabely="0" boardPos="-1e+6,-1e+6" y="-424" mainComp="false" boardRot="-1e+6" Show_id="false" itemtype="Node" labely="-24" valLabelx="0" objectName="Node-136" labelrot="0" vflip="1" valLabRot="0"/>
 
-Unique  Id: SerialTerm-106: 
-Circuit Id: SerialTerm-106
-<item circPos="0,0" id="SerialTerm-106" posx="491" rotation="0" labelx="-16" circRot="0" hflip="1" Mcu_Id="Arduino Uno-1" x="-384" valLabely="0" boardPos="-1e+6,-1e+6" sizey="367" y="-268" mainComp="false" boardRot="-1e+6" Show_id="false" itemtype="SerialTerm" labely="-24" Mcu_Uart="1" valLabelx="0" objectName="SerialTerm-106" posy="213" labelrot="0" vflip="1" sizex="530" valLabRot="0"/>
-
 Unique  Id: Connector-13: 
 Circuit Id: Connector-13
 <item circPos="0,0" id="Connector-13" enodeid="Circ_eNode-137" pointList="-180,-304,-200,-304" rotation="0" labelx="-16" circRot="0" hflip="1" x="-180" valLabely="0" boardPos="-1e+6,-1e+6" y="-304" mainComp="false" boardRot="-1e+6" startpinid="Servo-5-in1" Show_id="false" itemtype="Connector" labely="-24" endpinid="Node-17-0" valLabelx="0" objectName="Connector-13" labelrot="0" vflip="1" valLabRot="0"/>
