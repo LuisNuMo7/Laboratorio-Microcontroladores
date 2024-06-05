@@ -2,19 +2,19 @@
 #include <Keypad.h>
 #include <ArduinoMqttClient.h>
 
-#if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_AVR_UNO_WIFI_REV2)
-  #include <WiFiNINA.h>
-#elif defined(ARDUINO_SAMD_MKR1000)
+// #if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_AVR_UNO_WIFI_REV2)
+  // #include <WiFiNINA.h>
+// #elif defined(ARDUINO_SAMD_MKR1000)
   #include <WiFi101.h>
-#elif defined(ARDUINO_ARCH_ESP8266)
-  #include <ESP8266WiFi.h>
-#elif defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_NICLA_VISION) || defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_GIGA) || defined(ARDUINO_OPTA)
-  #include <WiFi.h>
-#elif defined(ARDUINO_PORTENTA_C33)
-  #include <WiFiC3.h>
-#elif defined(ARDUINO_UNOR4_WIFI)
-  #include <WiFiS3.h>
-#endif
+// #elif defined(ARDUINO_ARCH_ESP8266)
+//   #include <ESP8266WiFi.h>
+// #elif defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_NICLA_VISION) || defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_GIGA) || defined(ARDUINO_OPTA)
+//   #include <WiFi.h>
+// #elif defined(ARDUINO_PORTENTA_C33)
+//   #include <WiFiC3.h>
+// #elif defined(ARDUINO_UNOR4_WIFI)
+//   #include <WiFiS3.h>
+// #endif
 
 #include "arduino_secrets.h"
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
@@ -160,6 +160,16 @@ void loop() {
   //       Finaliza Mensaje MQTT        //
   //////////////////////////////////////
 
+  //////////////////////////////////////
+  //  Inicia Recibir key Keypad       //
+  //////////////////////////////////////
+    char key = keypad.getKey();
+    if(key != NO_KEY){
+      Serial.println(key);
+    }
+  //////////////////////////////////////
+  //  Inicia Recibir key Keypad       //
+  //////////////////////////////////////
 
   //////////////////////////////////////
   //  Inicia movimiento Servomotoes   //
@@ -211,8 +221,4 @@ void loop() {
   //////////////////////////////////////
   
 
-  char key = keypad.getKey();
-  if(key != NO_KEY){
-    Serial.println(key);
-  }
 }
