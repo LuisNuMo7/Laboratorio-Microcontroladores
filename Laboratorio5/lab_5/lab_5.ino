@@ -1,3 +1,8 @@
+// Laboratorio 5 - Arduino Nano BLE - ML
+// Seth Harrington - B83712
+// Luis Diego Núñez Mora - B75473
+
+ 
 #include <TensorFlowLite.h>
 #include <Arduino_LSM9DS1.h>
 
